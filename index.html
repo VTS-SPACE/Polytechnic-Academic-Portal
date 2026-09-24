@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Polytechnic Sessional, Practical and Attendance Management System">
+    <title>Polytechnic Academic Portal</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <header class="site-header">
+            <a class="brand" href="#top" aria-label="Polytechnic Academic Portal home">
+                <span class="brand-mark"><img src="icon.png" alt=""></span>
+                <span><strong>Polytechnic Academic Portal</strong><small>Sessional, practical &amp; attendance
+                        records</small></span>
+            </a>
+            <div class="header-actions">
+                <span class="session-label"><span class="status-dot"></span> Local records</span>
+                <button class="theme-button" id="themeToggle" type="button" aria-label="Toggle dark mode">Theme</button>
+            </div>
+        </header>
+
+        <main id="top" class="page-content">
+            <section class="welcome" aria-labelledby="pageTitle">
+                <div>
+                    <p class="eyebrow">Department office / Academic year 2025-26</p>
+                    <h1 id="pageTitle">Student sessional records</h1>
+                    <p class="intro-copy">Keep internal marks, practical performance, and attendance together in one
+                        simple college record book.</p>
+                </div>
+                <a class="button button-primary" href="#studentForm"><span aria-hidden="true">+</span> Add student
+                    record</a>
+            </section>
+
+            <section class="summary-grid" aria-label="Record summary">
+                <article class="summary-card summary-primary"><span class="summary-label">Total students</span><strong
+                        id="totalStudents">0</strong><small>Saved records</small></article>
+                <article class="summary-card"><span class="summary-label">Average percentage</span><strong
+                        id="averagePercentage">0%</strong><small>Across saved results</small></article>
+                <article class="summary-card"><span class="summary-label">Attendance cleared</span><strong
+                        id="attendanceCleared">0%</strong><small>75% minimum required</small></article>
+                <article class="summary-card"><span class="summary-label">Backlog cases</span><strong
+                        id="backlogCases">0</strong><small>Needs academic review</small></article>
+            </section>
+
+            <div class="main-grid">
+                <section class="panel form-panel" id="studentForm" aria-labelledby="formTitle">
+                    <div class="panel-title">
+                        <div>
+                            <p class="section-label">New entry</p>
+                            <h2 id="formTitle">Student information</h2>
+                        </div><span class="required-note"><span>*</span> Required</span>
+                    </div>
+                    <form id="recordForm" novalidate>
+                        <div class="identity-grid">
+                            <div class="field field-wide"><label for="fullName">Student full name
+                                    <span>*</span></label><input id="fullName" name="fullName" type="text" minlength="3"
+                                    placeholder="e.g. Priya Sharma" required><small class="field-error"
+                                    data-error-for="fullName"></small></div>
+                            <div class="field"><label for="rollNumber">Enrollment / roll number
+                                    <span>*</span></label><input id="rollNumber" name="rollNumber" type="text"
+                                    pattern="[A-Za-z0-9-]+" placeholder="e.g. CS-24018" required><small
+                                    class="field-error" data-error-for="rollNumber"></small></div>
+                            <div class="field"><label for="branch">Branch <span>*</span></label>
+                                <div class="custom-select" data-select-wrapper="branch"><select id="branch"
+                                        name="branch" required>
+                                        <option value="">Select branch</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="IT">IT</option>
+                                        <option value="Electrical">Electrical</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Civil">Civil</option>
+                                    </select><button class="custom-select-trigger" type="button" aria-haspopup="listbox"
+                                        aria-expanded="false"><span>Select branch</span><i
+                                            aria-hidden="true"></i></button>
+                                    <div class="custom-select-menu" role="listbox" tabindex="-1"></div>
+                                </div><small class="field-error" data-error-for="branch"></small>
+                            </div>
+                            <div class="field"><label for="semester">Semester <span>*</span></label>
+                                <div class="custom-select" data-select-wrapper="semester"><select id="semester"
+                                        name="semester" required>
+                                        <option value="">Select semester</option>
+                                        <option value="3rd Sem">3rd Sem</option>
+                                        <option value="4th Sem">4th Sem</option>
+                                        <option value="5th Sem">5th Sem</option>
+                                        <option value="6th Sem">6th Sem</option>
+                                    </select><button class="custom-select-trigger" type="button" aria-haspopup="listbox"
+                                        aria-expanded="false"><span>Select semester</span><i
+                                            aria-hidden="true"></i></button>
+                                    <div class="custom-select-menu" role="listbox" tabindex="-1"></div>
+                                </div><small class="field-error" data-error-for="semester"></small>
+                            </div>
+                        </div>
+
+                        <div class="subjects-section">
+                            <div class="subjects-heading">
+                                <div>
+                                    <p class="section-label">Marks &amp; attendance</p>
+                                    <h3>Subject details</h3>
+                                    <p>Enter theory and practical marks out of 50. Attendance is recorded below each
+                                        subject.</p>
+                                </div><button class="button button-secondary button-small" id="addSubjectButton"
+                                    type="button"><span aria-hidden="true">+</span> Add subject</button>
+                            </div>
+                            <div class="subjects-table-wrap">
+                                <div class="subjects-table subjects-table-header"><span>Subject name</span><span>Theory
+                                        max marks</span><span>Theory obtained</span><span>Practical max
+                                        marks</span><span>Practical obtained</span><span></span></div>
+                                <div id="subjectsList"></div>
+                            </div>
+                            <div class="calculation-preview" aria-live="polite">
+                                <div><span>Total marks</span><strong id="previewTotal">0 / 0</strong></div>
+                                <div><span>Percentage</span><strong id="previewPercentage">0.00%</strong></div>
+                                <div><span>Attendance</span><strong id="previewAttendance">0.0%</strong></div>
+                                <div><span>Status</span><strong id="previewStatus">Add subjects</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions"><button class="button button-primary" id="saveButton"
+                                type="submit">Save student record <span
+                                    aria-hidden="true">&#8594;</span></button><button class="button button-secondary"
+                                id="clearButton" type="reset">Clear form</button></div>
+                    </form>
+                </section>
+
+                <aside class="help-column">
+                    <section class="notice-card">
+                        <p class="section-label">Grading rules</p>
+                        <h2>Division calculation</h2>
+                        <ul>
+                            <li><strong>1st Division</strong><span>60% and above</span></li>
+                            <li><strong>2nd Division</strong><span>45% - 59.9%</span></li>
+                            <li><strong>3rd Division</strong><span>33% - 44.9%</span></li>
+                            <li><strong>Backlog / Fail</strong><span>Below 33% or any subject below 33%</span></li>
+                        </ul>
+                    </section>
+                    <section class="notice-card notice-warning">
+                        <p class="section-label">Attendance rule</p>
+                        <h2>Minimum 75%</h2>
+                        <p>Students below 75% overall attendance are marked with a Short Attendance warning for
+                            departmental review.</p>
+                    </section>
+                </aside>
+            </div>
+
+            <section class="panel records-panel" id="records" aria-labelledby="recordsTitle">
+                <div class="panel-title records-title">
+                    <div>
+                        <p class="section-label">Saved entries</p>
+                        <h2 id="recordsTitle">Student record book</h2>
+                        <p>Search by student name or enrollment number.</p>
+                    </div><span class="record-count" id="recordCount">0 records</span>
+                </div>
+                <div class="record-toolbar"><label class="search-box" for="searchInput"><span
+                            aria-hidden="true">&#9906;</span><input id="searchInput" type="search"
+                            placeholder="Search records..." autocomplete="off"></label><button
+                        class="button button-secondary" id="exportButton" type="button">Export CSV</button></div>
+                <div class="records-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Roll number</th>
+                                <th scope="col">Student name</th>
+                                <th scope="col">Branch</th>
+                                <th scope="col">Total %</th>
+                                <th scope="col">Attendance %</th>
+                                <th scope="col">Final result</th>
+                                <th scope="col"><span class="sr-only">Actions</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody"></tbody>
+                    </table>
+                    <div class="empty-state" id="emptyState" hidden><span class="empty-icon" aria-hidden="true">+</span>
+                        <h3>No student records yet</h3>
+                        <p>Add the first student record using the form above.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer"><span>Polytechnic Academic Portal</span><span>Offline-friendly record
+                management</span></footer>
+    </div>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+    <div class="modal-backdrop" id="marksheetModal" hidden>
+        <section class="marksheet-modal" role="dialog" aria-modal="true" aria-labelledby="marksheetTitle">
+            <div class="modal-toolbar"><span class="section-label">Official internal record</span>
+                <div><button class="button button-primary button-small" id="printButton" type="button">Print / Save
+                        PDF</button><button class="close-button" id="closeModalButton" type="button"
+                        aria-label="Close marksheet">&times;</button></div>
+            </div>
+            <div class="marksheet" id="marksheetContent"></div>
+        </section>
+    </div>
+</body>
+
+</html>
